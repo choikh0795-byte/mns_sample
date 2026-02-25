@@ -26,7 +26,7 @@ export const LoginPage = () => {
   return (
     <div className="min-h-screen bg-[#F7F8FA] flex">
       {/* 좌측 브랜드 패널 — 화이트/그레이 계열 */}
-      <div className="hidden lg:flex lg:w-1/2 bg-white border-r border-slate-100 flex-col justify-between p-12">
+      <div className="hidden lg:flex lg:w-[38%] bg-white border-r border-slate-100 flex-col justify-between p-10">
         {/* 로고 */}
         <div className="flex items-center gap-3">
           <div className="w-9 h-9 bg-blue-600 rounded-xl flex items-center justify-center shadow-sm">
@@ -81,7 +81,7 @@ export const LoginPage = () => {
       </div>
 
       {/* 우측 로그인 폼 */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-8 bg-[#F7F8FA]">
+      <div className="w-full lg:w-[62%] flex items-center justify-center p-8 bg-[#F7F8FA]">
         <div className="w-full max-w-md">
           {/* 모바일 로고 */}
           <div className="flex items-center gap-3 mb-10 lg:hidden">

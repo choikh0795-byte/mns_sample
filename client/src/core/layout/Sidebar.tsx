@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import {
   Target, Users, Star, Heart, BarChart2,
   ChevronDown, LogOut, Bell,
-  ClipboardList, User,
+  ClipboardList, User, FileText, Award,
 } from 'lucide-react';
 import { useAuthStore } from '../store/useAuthStore';
 
@@ -35,12 +35,16 @@ const menuItems: MenuItem[] = [
     icon: <Users className="w-5 h-5" />,
     children: [
       { id: 'goal-registration', label: '개인별 목표 등록' },
+      { id: 'individual-achievement-print', label: '개인별업적평가 출력' },
     ],
   },
   {
     id: 'competency-eval',
     label: '역량평가',
     icon: <Star className="w-5 h-5" />,
+    children: [
+      { id: 'competency-self-eval', label: '본인평가' },
+    ],
   },
   {
     id: 'culture-improvement',
@@ -147,7 +151,13 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeMenu, onMenuChange }) =>
                               : 'text-slate-500 hover:bg-slate-50 hover:text-slate-800 font-medium'
                           }`}
                         >
-                          <ClipboardList className={`w-4 h-4 ${isActive ? 'text-blue-500' : 'text-slate-400'}`} />
+                          {child.id === 'individual-achievement-print' ? (
+                            <FileText className={`w-4 h-4 ${isActive ? 'text-blue-500' : 'text-slate-400'}`} />
+                          ) : child.id === 'competency-self-eval' ? (
+                            <Award className={`w-4 h-4 ${isActive ? 'text-blue-500' : 'text-slate-400'}`} />
+                          ) : (
+                            <ClipboardList className={`w-4 h-4 ${isActive ? 'text-blue-500' : 'text-slate-400'}`} />
+                          )}
                           <span className="flex-1 text-left">{child.label}</span>
                         </button>
                       );

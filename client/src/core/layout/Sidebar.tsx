@@ -3,6 +3,7 @@ import {
   Target, Users, Star, Heart, BarChart2,
   ChevronDown, LogOut, Bell,
   ClipboardList, User, FileText, Award, LayoutDashboard, PenLine, BookOpen,
+  TrendingUp, CheckSquare, CheckCircle2,
 } from 'lucide-react';
 import { useAuthStore } from '../store/useAuthStore';
 
@@ -31,6 +32,9 @@ const menuItems: MenuItem[] = [
     children: [
       { id: 'team-status', label: '팀 성과 현황' },
       { id: 'team-goal-registration', label: '목표 등록' },
+      { id: 'team-achievement-result', label: '실적 등록' },
+      { id: 'team-first-eval', label: '1차평가' },
+      { id: 'team-second-eval', label: '2차평가' },
     ],
   },
   {
@@ -174,6 +178,12 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeMenu, onMenuChange }) =>
                             <PenLine className={`w-4 h-4 ${isActive ? 'text-blue-500' : 'text-slate-400'}`} />
                           ) : child.id === 'culture-first-eval' ? (
                             <ClipboardList className={`w-4 h-4 ${isActive ? 'text-blue-500' : 'text-slate-400'}`} />
+                          ) : child.id === 'team-achievement-result' ? (
+                            <TrendingUp className={`w-4 h-4 ${isActive ? 'text-blue-500' : 'text-slate-400'}`} />
+                          ) : child.id === 'team-first-eval' ? (
+                            <CheckSquare className={`w-4 h-4 ${isActive ? 'text-blue-500' : 'text-slate-400'}`} />
+                          ) : child.id === 'team-second-eval' ? (
+                            <CheckCircle2 className={`w-4 h-4 ${isActive ? 'text-blue-500' : 'text-slate-400'}`} />
                           ) : (
                             <ClipboardList className={`w-4 h-4 ${isActive ? 'text-blue-500' : 'text-slate-400'}`} />
                           )}

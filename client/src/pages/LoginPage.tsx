@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useAuthStore } from '../core/store/useAuthStore';
-import { Eye, EyeOff, BarChart2, TrendingUp } from 'lucide-react';
+import { Eye, EyeOff, BarChart2, TrendingUp, CheckCircle, Users, Target, MessageCircle } from 'lucide-react';
 
 export const LoginPage = () => {
   const { login } = useAuthStore();
@@ -25,55 +25,70 @@ export const LoginPage = () => {
 
   return (
     <div className="min-h-screen bg-[#F7F8FA] flex">
-      {/* 좌측 브랜드 패널 */}
-      <div className="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-blue-600 to-blue-800 flex-col justify-between p-12">
+      {/* 좌측 브랜드 패널 — 화이트/그레이 계열 */}
+      <div className="hidden lg:flex lg:w-1/2 bg-white border-r border-slate-100 flex-col justify-between p-12">
+        {/* 로고 */}
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 bg-white/20 rounded-xl flex items-center justify-center">
+          <div className="w-9 h-9 bg-blue-600 rounded-xl flex items-center justify-center shadow-sm">
             <BarChart2 className="text-white w-5 h-5" />
           </div>
-          <span className="text-white text-xl font-bold tracking-tight">MNS 성과관리</span>
+          <div>
+            <span className="text-slate-900 text-xl font-bold tracking-tight">PMS</span>
+            <span className="text-slate-400 text-sm ml-2 font-normal">Performance Management System</span>
+          </div>
         </div>
 
+        {/* 메인 카피 */}
         <div>
-          <h1 className="text-4xl font-bold text-white leading-tight mb-5">
-            성과를 측정하고<br />성장을 가속화하세요
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-blue-50 rounded-full mb-6">
+            <span className="w-1.5 h-1.5 rounded-full bg-blue-500"></span>
+            <span className="text-xs font-semibold text-blue-600">2026 성과관리 플랫폼</span>
+          </div>
+          <h1 className="text-4xl font-bold text-slate-900 leading-tight mb-4">
+            성과를 측정하고<br />
+            <span className="text-blue-600">성장을 가속화</span>하세요
           </h1>
-          <p className="text-blue-100 text-base leading-relaxed mb-10">
+          <p className="text-slate-500 text-base leading-relaxed mb-10">
             팀 업적부터 개인 역량평가까지, 통합된 인사평가 플랫폼으로<br />
             조직의 성과를 체계적으로 관리하세요.
           </p>
 
+          {/* 통계 카드 */}
           <div className="grid grid-cols-2 gap-4">
             {[
-              { label: '평가 완료율', value: '94.2%', sub: '이번 분기 기준' },
-              { label: '활성 사용자', value: '312명', sub: '전체 임직원' },
-              { label: '팀 OKR 달성', value: '87%', sub: '목표 대비' },
-              { label: '피드백 건수', value: '1,840건', sub: '이번 달 누적' },
+              { icon: <CheckCircle className="w-4 h-4 text-emerald-600" />, label: '평가 완료율', value: '94.2%', sub: '이번 분기 기준', bg: 'bg-emerald-50', border: 'border-emerald-100' },
+              { icon: <Users className="w-4 h-4 text-blue-600" />, label: '활성 사용자', value: '312명', sub: '전체 임직원', bg: 'bg-blue-50', border: 'border-blue-100' },
+              { icon: <Target className="w-4 h-4 text-violet-600" />, label: '팀 OKR 달성', value: '87%', sub: '목표 대비', bg: 'bg-violet-50', border: 'border-violet-100' },
+              { icon: <MessageCircle className="w-4 h-4 text-amber-600" />, label: '피드백 건수', value: '1,840건', sub: '이번 달 누적', bg: 'bg-amber-50', border: 'border-amber-100' },
             ].map((stat) => (
-              <div key={stat.label} className="bg-white/10 rounded-2xl p-4 backdrop-blur-sm">
-                <p className="text-blue-100 text-xs font-medium mb-1">{stat.label}</p>
-                <p className="text-white text-2xl font-bold">{stat.value}</p>
-                <p className="text-blue-200 text-xs mt-0.5">{stat.sub}</p>
+              <div key={stat.label} className={`${stat.bg} border ${stat.border} rounded-2xl p-4`}>
+                <div className="flex items-center gap-2 mb-2">
+                  {stat.icon}
+                  <p className="text-xs font-medium text-slate-500">{stat.label}</p>
+                </div>
+                <p className="text-2xl font-bold text-slate-900">{stat.value}</p>
+                <p className="text-xs text-slate-400 mt-0.5">{stat.sub}</p>
               </div>
             ))}
           </div>
         </div>
 
-        <div className="flex items-center gap-2 text-blue-200 text-sm">
+        {/* 하단 */}
+        <div className="flex items-center gap-2 text-slate-400 text-sm">
           <TrendingUp className="w-4 h-4" />
-          <span>© 2026 MNS HR Platform. All rights reserved.</span>
+          <span>© 2026 PMS HR Platform. All rights reserved.</span>
         </div>
       </div>
 
       {/* 우측 로그인 폼 */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-8">
+      <div className="w-full lg:w-1/2 flex items-center justify-center p-8 bg-[#F7F8FA]">
         <div className="w-full max-w-md">
           {/* 모바일 로고 */}
           <div className="flex items-center gap-3 mb-10 lg:hidden">
             <div className="w-9 h-9 bg-blue-600 rounded-xl flex items-center justify-center">
               <BarChart2 className="text-white w-5 h-5" />
             </div>
-            <span className="text-slate-900 text-xl font-bold">MNS 성과관리</span>
+            <span className="text-slate-900 text-xl font-bold">PMS</span>
           </div>
 
           <div className="mb-8">

@@ -3,23 +3,23 @@ import { useAuthStore } from './core/store/useAuthStore';
 import { MainLayout } from './core/layout/MainLayout';
 import { LoginPage } from './pages/LoginPage';
 import { TeamStatusPage } from './pages/TeamStatusPage';
-import { IndividualEvalPage } from './pages/IndividualEvalPage';
 import { CompetencyEvalPage } from './pages/CompetencyEvalPage';
 import { CulturePage } from './pages/CulturePage';
 import { ComprehensivePage } from './pages/ComprehensivePage';
 import { PlaceholderPage } from './pages/PlaceholderPage';
+import { GoalRegistrationPage } from './pages/GoalRegistrationPage';
 
 const renderPage = (menuId: string) => {
   switch (menuId) {
     case 'team-status':
       return <TeamStatusPage />;
-    case 'eval-status':
-      return <IndividualEvalPage />;
-    case 'competency-progress':
+    case 'goal-registration':
+      return <GoalRegistrationPage />;
+    case 'competency-eval':
       return <CompetencyEvalPage />;
-    case 'survey-mgmt':
+    case 'culture-improvement':
       return <CulturePage />;
-    case 'score-status':
+    case 'comprehensive-eval':
       return <ComprehensivePage />;
     default:
       return <PlaceholderPage menuId={menuId} />;

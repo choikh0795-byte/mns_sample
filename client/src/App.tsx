@@ -11,6 +11,9 @@ import { ComprehensivePage } from './pages/ComprehensivePage';
 import { PlaceholderPage } from './pages/PlaceholderPage';
 import { GoalRegistrationPage } from './pages/GoalRegistrationPage';
 import { TeamGoalRegistrationPage } from './pages/TeamGoalRegistrationPage';
+import { TeamAchievementResultPage } from './pages/TeamAchievementResultPage';
+import { TeamFirstEvalPage } from './pages/TeamFirstEvalPage';
+import { TeamSecondEvalPage } from './pages/TeamSecondEvalPage';
 import { IndividualAchievementPrintPage } from './pages/IndividualAchievementPrintPage';
 import { CompetencySelfEvalPage } from './pages/CompetencySelfEvalPage';
 
@@ -20,6 +23,12 @@ const renderPage = (menuId: string) => {
       return <TeamStatusPage />;
     case 'team-goal-registration':
       return <TeamGoalRegistrationPage />;
+    case 'team-achievement-result':
+      return <TeamAchievementResultPage />;
+    case 'team-first-eval':
+      return <TeamFirstEvalPage />;
+    case 'team-second-eval':
+      return <TeamSecondEvalPage />;
     case 'goal-registration':
       return <GoalRegistrationPage />;
     case 'individual-achievement-print':

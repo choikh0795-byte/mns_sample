@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Search, Printer, User } from 'lucide-react';
+import { Search, Printer, User, TrendingUp, BarChart2, Target } from 'lucide-react';
 
 interface EvalGoal {
   orgGoal: string;
@@ -416,16 +416,34 @@ const allEmployees: Employee[] = [
   },
 ];
 
+const getEvalTypeBadge = (type: string) => {
+  if (type === '정량') return 'bg-blue-100 text-blue-700';
+  if (type === '정성') return 'bg-violet-100 text-violet-700';
+  return 'bg-slate-100 text-slate-600';
+};
+
 const getAchieveRateColor = (rate: number) => {
   if (rate >= 100) return 'text-emerald-600';
   if (rate >= 80) return 'text-blue-600';
   return 'text-amber-600';
 };
 
+const getAchieveBarColor = (rate: number) => {
+  if (rate >= 100) return 'bg-emerald-500';
+  if (rate >= 80) return 'bg-blue-500';
+  return 'bg-amber-400';
+};
+
 const getScoreColor = (score: number) => {
-  if (score >= 90) return 'text-emerald-600 font-semibold';
-  if (score >= 80) return 'text-blue-600 font-semibold';
-  return 'text-amber-600 font-semibold';
+  if (score >= 90) return 'text-emerald-600';
+  if (score >= 80) return 'text-blue-600';
+  return 'text-amber-600';
+};
+
+const getScoreBg = (score: number) => {
+  if (score >= 90) return 'bg-emerald-50 border-emerald-100';
+  if (score >= 80) return 'bg-blue-50 border-blue-100';
+  return 'bg-amber-50 border-amber-100';
 };
 
 export const IndividualAchievementPrintPage = () => {
@@ -519,17 +537,17 @@ export const IndividualAchievementPrintPage = () => {
                 </div>
                 <p className="text-sm text-slate-500">총 {selectedEmployee.goals.length}개 목표 등록</p>
               </div>
-              <div className="flex items-center gap-6 pr-2">
-                <div className="text-center">
+              {/* 요약 스탯 */}
+              <div className="flex items-center gap-5">
+                <div className={`flex flex-col items-center px-6 py-3 rounded-xl border ${getScoreBg(weightedSelfScore)}`}>
                   <p className="text-xs text-slate-500 mb-1">본인 가중평균</p>
-                  <p className={`text-xl font-bold ${getScoreColor(weightedSelfScore)}`}>
+                  <p className={`text-2xl font-bold ${getScoreColor(weightedSelfScore)}`}>
                     {weightedSelfScore.toFixed(1)}
                   </p>
                 </div>
-                <div className="w-px h-10 bg-slate-100" />
-                <div className="text-center">
+                <div className={`flex flex-col items-center px-6 py-3 rounded-xl border ${getScoreBg(weightedFirstScore)}`}>
                   <p className="text-xs text-slate-500 mb-1">1차평가 가중평균</p>
-                  <p className={`text-xl font-bold ${getScoreColor(weightedFirstScore)}`}>
+                  <p className={`text-2xl font-bold ${getScoreColor(weightedFirstScore)}`}>
                     {weightedFirstScore.toFixed(1)}
                   </p>
                 </div>
@@ -537,114 +555,140 @@ export const IndividualAchievementPrintPage = () => {
             </div>
           </div>
 
-          {/* 업적평가 테이블 */}
-          <div className="bg-white rounded-2xl border border-slate-100 shadow-[0_2px_12px_rgba(0,0,0,0.03)]">
-            <div className="px-6 py-4 border-b border-slate-100 flex items-center gap-3">
+          {/* 섹션 헤더 */}
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center gap-3">
               <span className="text-sm font-semibold text-slate-900">업적평가 결과</span>
               <span className="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-blue-100 text-blue-700">
                 {selectedEmployee.goals.length}건
               </span>
             </div>
+            <div className="flex items-center gap-1.5 text-xs text-slate-400">
+              <BarChart2 className="w-3.5 h-3.5" />
+              <span>비중 합계</span>
+              <span className={`font-bold ${totalWeight === 100 ? 'text-emerald-600' : 'text-rose-500'}`}>
+                {totalWeight}%
+              </span>
+            </div>
+          </div>
 
-            <div className="overflow-x-auto">
-              <table className="w-full min-w-[1100px]">
-                <thead>
-                  <tr className="border-b border-slate-100 bg-slate-50/50">
-                    <th className="text-left text-xs font-semibold text-slate-600 px-4 py-3.5 w-[11%]">상위조직목표</th>
-                    <th className="text-left text-xs font-semibold text-slate-600 px-4 py-3.5 w-[12%]">목표</th>
-                    <th className="text-left text-xs font-semibold text-slate-600 px-4 py-3.5 w-[16%]">설정 사유</th>
-                    <th className="text-left text-xs font-semibold text-slate-600 px-4 py-3.5 w-[16%]">핵심 결과물</th>
-                    <th className="text-left text-xs font-semibold text-slate-600 px-4 py-3.5 w-[16%]">주요 실적</th>
-                    <th className="text-center text-xs font-semibold text-slate-600 px-4 py-3.5 w-[7%]">평가구분</th>
-                    <th className="text-center text-xs font-semibold text-slate-600 px-4 py-3.5 w-[7%]">비중(%)</th>
-                    <th className="text-center text-xs font-semibold text-slate-600 px-4 py-3.5 w-[7%]">달성율(%)</th>
-                    <th className="text-center text-xs font-semibold text-slate-600 px-4 py-3.5 w-[7%]">본인점수</th>
-                    <th className="text-center text-xs font-semibold text-slate-600 px-4 py-3.5 w-[7%]">1차평가점수</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {selectedEmployee.goals.map((goal, idx) => (
-                    <tr
-                      key={idx}
-                      className={`border-b border-slate-100 hover:bg-slate-50/50 transition-colors ${
-                        idx === selectedEmployee.goals.length - 1 ? 'border-none' : ''
-                      }`}
-                    >
-                      <td className="px-4 py-4 align-top">
-                        <p className="text-sm text-slate-700 leading-relaxed">{goal.orgGoal}</p>
-                      </td>
-                      <td className="px-4 py-4 align-top">
-                        <p className="text-sm text-slate-700 leading-relaxed">{goal.goal}</p>
-                      </td>
-                      <td className="px-4 py-4 align-top">
-                        <p className="text-sm text-slate-500 leading-relaxed">{goal.reason}</p>
-                      </td>
-                      <td className="px-4 py-4 align-top">
-                        <p className="text-sm text-slate-500 leading-relaxed">{goal.keyResult}</p>
-                      </td>
-                      <td className="px-4 py-4 align-top">
-                        <p className="text-sm text-slate-700 leading-relaxed">{goal.achievement}</p>
-                      </td>
-                      <td className="px-4 py-4 text-center align-top">
-                        <span className={`inline-flex px-2.5 py-0.5 rounded-full text-xs font-semibold ${
-                          goal.evalType === '정량'
-                            ? 'bg-blue-100 text-blue-700'
-                            : goal.evalType === '정성'
-                            ? 'bg-violet-100 text-violet-700'
-                            : 'bg-slate-100 text-slate-600'
-                        }`}>
-                          {goal.evalType}
-                        </span>
-                      </td>
-                      <td className="px-4 py-4 text-center align-top">
-                        <span className="text-sm font-semibold text-slate-700">{goal.weight}%</span>
-                      </td>
-                      <td className="px-4 py-4 text-center align-top">
-                        <span className={`text-sm font-semibold ${getAchieveRateColor(goal.achieveRate)}`}>
-                          {goal.achieveRate}%
-                        </span>
-                      </td>
-                      <td className="px-4 py-4 text-center align-top">
-                        <span className={`text-sm ${getScoreColor(goal.selfScore)}`}>
-                          {goal.selfScore}
-                        </span>
-                      </td>
-                      <td className="px-4 py-4 text-center align-top">
-                        <span className={`text-sm ${getScoreColor(goal.firstEvalScore)}`}>
-                          {goal.firstEvalScore}
-                        </span>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
+          {/* 목표 카드 리스트 */}
+          <div className="flex flex-col gap-4">
+            {selectedEmployee.goals.map((goal, idx) => (
+              <div
+                key={idx}
+                className="bg-white rounded-2xl border border-slate-100 shadow-[0_2px_12px_rgba(0,0,0,0.03)] overflow-hidden"
+              >
+                {/* 카드 헤더: 상위조직목표 + 목표명 + 뱃지 */}
+                <div className="flex items-start justify-between px-6 py-4 bg-slate-50/60 border-b border-slate-100">
+                  <div className="flex-1 min-w-0 pr-4">
+                    <div className="flex items-center gap-2 mb-1.5">
+                      <span className="text-xs font-semibold text-slate-400 shrink-0">목표 {idx + 1}</span>
+                      <span className="text-xs text-slate-400">·</span>
+                      <div className="flex items-center gap-1.5 min-w-0">
+                        <Target className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                        <span className="text-xs text-slate-500 truncate">{goal.orgGoal}</span>
+                      </div>
+                    </div>
+                    <p className="text-sm font-semibold text-slate-900 leading-snug">{goal.goal}</p>
+                  </div>
+                  <div className="flex items-center gap-2 shrink-0">
+                    <span className={`inline-flex px-2.5 py-1 rounded-lg text-xs font-semibold ${getEvalTypeBadge(goal.evalType)}`}>
+                      {goal.evalType}
+                    </span>
+                    <span className="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-semibold bg-slate-100 text-slate-600">
+                      비중 {goal.weight}%
+                    </span>
+                  </div>
+                </div>
 
-                {/* 합계 행 */}
-                <tfoot>
-                  <tr className="bg-slate-50/80 border-t-2 border-slate-200">
-                    <td colSpan={6} className="px-4 py-3.5 text-sm font-semibold text-slate-700 text-right">
-                      합계 / 가중평균
-                    </td>
-                    <td className="px-4 py-3.5 text-center">
-                      <span className={`text-sm font-bold ${totalWeight === 100 ? 'text-emerald-600' : 'text-rose-500'}`}>
-                        {totalWeight}%
+                {/* 카드 바디: 3열 그리드 — 설정사유 / 핵심결과물 / 주요실적 */}
+                <div className="grid grid-cols-3 divide-x divide-slate-100">
+                  <div className="px-6 py-4">
+                    <p className="text-xs font-semibold text-slate-400 mb-2 uppercase tracking-wide">설정 사유</p>
+                    <p className="text-sm text-slate-600 leading-relaxed">{goal.reason}</p>
+                  </div>
+                  <div className="px-6 py-4">
+                    <p className="text-xs font-semibold text-slate-400 mb-2 uppercase tracking-wide">핵심 결과물</p>
+                    <p className="text-sm text-slate-600 leading-relaxed">{goal.keyResult}</p>
+                  </div>
+                  <div className="px-6 py-4">
+                    <p className="text-xs font-semibold text-slate-400 mb-2 uppercase tracking-wide">주요 실적</p>
+                    <p className="text-sm text-slate-700 leading-relaxed font-medium">{goal.achievement}</p>
+                  </div>
+                </div>
+
+                {/* 카드 푸터: 메트릭 스트립 */}
+                <div className="flex items-stretch divide-x divide-slate-100 border-t border-slate-100 bg-slate-50/30">
+                  {/* 달성율 + 프로그레스 바 */}
+                  <div className="flex-1 flex items-center gap-4 px-6 py-3.5">
+                    <TrendingUp className="w-4 h-4 text-slate-400 shrink-0" />
+                    <div className="flex items-center gap-3 flex-1">
+                      <span className="text-xs text-slate-500 shrink-0">달성율</span>
+                      <span className={`text-sm font-bold shrink-0 ${getAchieveRateColor(goal.achieveRate)}`}>
+                        {goal.achieveRate}%
                       </span>
-                    </td>
-                    <td className="px-4 py-3.5 text-center">
-                      <span className="text-sm font-bold text-slate-500">—</span>
-                    </td>
-                    <td className="px-4 py-3.5 text-center">
-                      <span className={`text-sm font-bold ${getScoreColor(weightedSelfScore)}`}>
-                        {weightedSelfScore.toFixed(1)}
-                      </span>
-                    </td>
-                    <td className="px-4 py-3.5 text-center">
-                      <span className={`text-sm font-bold ${getScoreColor(weightedFirstScore)}`}>
-                        {weightedFirstScore.toFixed(1)}
-                      </span>
-                    </td>
-                  </tr>
-                </tfoot>
-              </table>
+                      <div className="flex-1 bg-slate-200 rounded-full h-1.5 max-w-[160px]">
+                        <div
+                          className={`h-1.5 rounded-full transition-all ${getAchieveBarColor(goal.achieveRate)}`}
+                          style={{ width: `${Math.min(goal.achieveRate, 100)}%` }}
+                        />
+                      </div>
+                      {goal.achieveRate >= 100 && (
+                        <span className="text-xs font-semibold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full shrink-0">
+                          목표 초과
+                        </span>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* 본인점수 */}
+                  <div className="flex flex-col items-center justify-center px-8 py-3.5 min-w-[110px]">
+                    <p className="text-xs text-slate-400 mb-1">본인점수</p>
+                    <span className={`text-xl font-bold ${getScoreColor(goal.selfScore)}`}>
+                      {goal.selfScore}
+                    </span>
+                  </div>
+
+                  {/* 1차평가점수 — 명확한 배경으로 강조 */}
+                  <div className={`flex flex-col items-center justify-center px-8 py-3.5 min-w-[130px] ${getScoreBg(goal.firstEvalScore)}`}>
+                    <p className="text-xs text-slate-500 mb-1 font-medium">1차평가점수</p>
+                    <span className={`text-xl font-bold ${getScoreColor(goal.firstEvalScore)}`}>
+                      {goal.firstEvalScore}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            ))}
+
+            {/* 합계 카드 */}
+            <div className="bg-slate-900 rounded-2xl px-6 py-4 flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <BarChart2 className="w-4 h-4 text-slate-400" />
+                <span className="text-sm font-semibold text-slate-200">합계 / 가중평균</span>
+              </div>
+              <div className="flex items-center gap-6">
+                <div className="flex items-center gap-2">
+                  <span className="text-xs text-slate-400">비중 합계</span>
+                  <span className={`text-sm font-bold ${totalWeight === 100 ? 'text-emerald-400' : 'text-rose-400'}`}>
+                    {totalWeight}%
+                  </span>
+                </div>
+                <div className="w-px h-6 bg-slate-700" />
+                <div className="flex items-center gap-2">
+                  <span className="text-xs text-slate-400">본인 가중평균</span>
+                  <span className={`text-base font-bold ${getScoreColor(weightedSelfScore)}`}>
+                    {weightedSelfScore.toFixed(1)}
+                  </span>
+                </div>
+                <div className="w-px h-6 bg-slate-700" />
+                <div className="flex items-center gap-2">
+                  <span className="text-xs text-slate-400">1차평가 가중평균</span>
+                  <span className={`text-base font-bold ${getScoreColor(weightedFirstScore)}`}>
+                    {weightedFirstScore.toFixed(1)}
+                  </span>
+                </div>
+              </div>
             </div>
           </div>
         </>

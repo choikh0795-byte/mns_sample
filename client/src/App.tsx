@@ -8,6 +8,8 @@ import { CulturePage } from './pages/CulturePage';
 import { ComprehensivePage } from './pages/ComprehensivePage';
 import { PlaceholderPage } from './pages/PlaceholderPage';
 import { GoalRegistrationPage } from './pages/GoalRegistrationPage';
+import { IndividualAchievementPrintPage } from './pages/IndividualAchievementPrintPage';
+import { CompetencySelfEvalPage } from './pages/CompetencySelfEvalPage';
 
 const renderPage = (menuId: string) => {
   switch (menuId) {
@@ -15,8 +17,12 @@ const renderPage = (menuId: string) => {
       return <TeamStatusPage />;
     case 'goal-registration':
       return <GoalRegistrationPage />;
+    case 'individual-achievement-print':
+      return <IndividualAchievementPrintPage />;
     case 'competency-eval':
       return <CompetencyEvalPage />;
+    case 'competency-self-eval':
+      return <CompetencySelfEvalPage />;
     case 'culture-improvement':
       return <CulturePage />;
     case 'comprehensive-eval':

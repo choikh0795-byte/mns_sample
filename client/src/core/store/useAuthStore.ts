@@ -1,10 +1,6 @@
 /**
- * Auth Store (Skeleton)
- *
- * 인증 상태 관리
- *
- * @example
- * const { user, login, logout } = useAuthStore();
+ * Auth Store
+ * 인증 상태 관리 (프로토타입: 어떤 계정 정보로든 로그인 가능)
  */
 
 import { create } from 'zustand';
@@ -14,15 +10,15 @@ interface User {
   id: string;
   email: string;
   name: string;
-  // TODO: 추가 사용자 정보
+  role: string;
+  department: string;
+  avatar: string;
 }
 
 interface AuthState {
   user: User | null;
   token: string | null;
   isAuthenticated: boolean;
-
-  // Actions
   login: (email: string, password: string) => Promise<void>;
   logout: () => void;
   setUser: (user: User) => void;
@@ -36,15 +32,26 @@ export const useAuthStore = create<AuthState>()(
       isAuthenticated: false,
 
       login: async (email: string, password: string) => {
-        // TODO: API 호출로 로그인 처리
-        // const response = await apiClient.post('/auth/login', { email, password });
-        // set({ user: response.data.user, token: response.data.token, isAuthenticated: true });
-
-        console.log('Login called with:', email, password);
+        if (!email || !password) {
+          throw new Error('이메일과 비밀번호를 입력해주세요.');
+        }
+        // 프로토타입: 어떤 계정 정보로든 로그인 허용
+        const namePart = email.split('@')[0] || '관리자';
+        set({
+          user: {
+            id: '1',
+            email,
+            name: namePart,
+            role: 'HR 매니저',
+            department: '인사팀',
+            avatar: namePart.substring(0, 2).toUpperCase(),
+          },
+          token: 'prototype-token-' + Date.now(),
+          isAuthenticated: true,
+        });
       },
 
       logout: () => {
-        // TODO: 토큰 삭제, 상태 초기화
         set({ user: null, token: null, isAuthenticated: false });
       },
 
@@ -53,7 +60,7 @@ export const useAuthStore = create<AuthState>()(
       },
     }),
     {
-      name: 'auth-storage', // localStorage key
+      name: 'auth-storage',
     }
   )
 );

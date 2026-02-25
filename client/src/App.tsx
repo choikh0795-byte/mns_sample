@@ -5,6 +5,8 @@ import { LoginPage } from './pages/LoginPage';
 import { TeamStatusPage } from './pages/TeamStatusPage';
 import { CompetencyEvalPage } from './pages/CompetencyEvalPage';
 import { CulturePage } from './pages/CulturePage';
+import { CultureEvalRegistrationPage } from './pages/CultureEvalRegistrationPage';
+import { CultureFirstEvalPage } from './pages/CultureFirstEvalPage';
 import { ComprehensivePage } from './pages/ComprehensivePage';
 import { PlaceholderPage } from './pages/PlaceholderPage';
 import { GoalRegistrationPage } from './pages/GoalRegistrationPage';
@@ -24,7 +26,12 @@ const renderPage = (menuId: string) => {
     case 'competency-self-eval':
       return <CompetencySelfEvalPage />;
     case 'culture-improvement':
+    case 'culture-dashboard':
       return <CulturePage />;
+    case 'culture-eval-registration':
+      return <CultureEvalRegistrationPage />;
+    case 'culture-first-eval':
+      return <CultureFirstEvalPage />;
     case 'comprehensive-eval':
       return <ComprehensivePage />;
     default:

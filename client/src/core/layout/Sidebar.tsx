@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import {
   Target, Users, Star, Heart, BarChart2,
   ChevronDown, LogOut, Bell,
-  ClipboardList, User, FileText, Award,
+  ClipboardList, User, FileText, Award, LayoutDashboard, PenLine,
 } from 'lucide-react';
 import { useAuthStore } from '../store/useAuthStore';
 
@@ -50,6 +50,11 @@ const menuItems: MenuItem[] = [
     id: 'culture-improvement',
     label: '조직문화개선',
     icon: <Heart className="w-5 h-5" />,
+    children: [
+      { id: 'culture-dashboard', label: '대시보드' },
+      { id: 'culture-eval-registration', label: '자기평가 등록' },
+      { id: 'culture-first-eval', label: '1차평가' },
+    ],
   },
   {
     id: 'comprehensive-eval',
@@ -155,6 +160,12 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeMenu, onMenuChange }) =>
                             <FileText className={`w-4 h-4 ${isActive ? 'text-blue-500' : 'text-slate-400'}`} />
                           ) : child.id === 'competency-self-eval' ? (
                             <Award className={`w-4 h-4 ${isActive ? 'text-blue-500' : 'text-slate-400'}`} />
+                          ) : child.id === 'culture-dashboard' ? (
+                            <LayoutDashboard className={`w-4 h-4 ${isActive ? 'text-blue-500' : 'text-slate-400'}`} />
+                          ) : child.id === 'culture-eval-registration' ? (
+                            <PenLine className={`w-4 h-4 ${isActive ? 'text-blue-500' : 'text-slate-400'}`} />
+                          ) : child.id === 'culture-first-eval' ? (
+                            <ClipboardList className={`w-4 h-4 ${isActive ? 'text-blue-500' : 'text-slate-400'}`} />
                           ) : (
                             <ClipboardList className={`w-4 h-4 ${isActive ? 'text-blue-500' : 'text-slate-400'}`} />
                           )}
